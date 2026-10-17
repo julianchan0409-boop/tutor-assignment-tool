@@ -1,0 +1,64 @@
+\documentclass[11pt,a4paper,addpoints]{exam}
+
+% Packages for math, graphics, and diagrams
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2cm, top=2.5cm, bottom=2.5cm, right=2.8cm]{geometry}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta, calc, angles, quotes, patterns, positioning, decorations.markings}
+\usepackage{enumitem}
+
+% Exam class point formatting (Right-aligned points)
+\pointsinrightmargin
+\pointpoints{mark}{marks}
+\pointformat{\textbf{[\themarginpoints]}}
+\setlength{\rightpointsmargin}{2.2cm}
+
+% Working lines styling
+\setlength{\linefillheight}{0.75cm}
+\setlength{\linefillthickness}{0.4pt}
+
+% Header & Footer Configuration
+\pagestyle{headandfoot}
+\firstpageheader{\textbf{%%SUBJECT%%}}{\Large\textbf{%%EXAM_TITLE%%}}{\textbf{Time Allowed: %%TIME_ALLOWED%%}}
+\runningheader{\small\textbf{%%SUBJECT%%}}{\small\textbf{%%EXAM_TITLE%%}}{\small Page \thepage\ of \numpages}
+\firstpageheadrule
+\runningheadrule
+
+\firstpagefooter{}{Page \thepage\ of \numpages}{\textbf{Turn over}}
+\runningfooter{}{Page \thepage\ of \numpages}{}
+\firstpagefootrule
+\runningfootrule
+
+\begin{document}
+
+% Assessment Info Banner
+\noindent
+\begin{center}
+\fbox{\parbox{0.97\textwidth}{
+    \vspace{0.2cm}
+    \textbf{Student Name:} \underline{\hspace{6.5cm}} \hfill
+    \textbf{Date:} \underline{\hspace{3.5cm}} \\[0.35cm]
+    \textbf{Subject:} %%SUBJECT%% \hfill
+    \textbf{Time Allowed:} %%TIME_ALLOWED%% \hfill
+    \textbf{Full Marks:} \textbf{\numpoints\ marks}
+    \vspace{0.2cm}
+}}
+\end{center}
+
+\vspace{0.4cm}
+
+%%SECTION_A_BLOCK%%
+
+%%SECTION_B_BLOCK%%
+
+\vfill
+\begin{center}
+    \textbf{--- END OF ASSESSMENT ---}
+\end{center}
+
+\end{document}
