@@ -338,7 +338,10 @@ def main() -> None:
         else:
             progress = st.progress(0, text="Parsing uploaded files with Gemini Vision...")
             extracted_total = 0
+            import time
             for f_idx, uploaded_file in enumerate(uploaded_files):
+                if f_idx > 0:
+                    time.sleep(2.0)  # Gentle delay to stay within free-tier requests-per-minute limits
                 progress.progress(
                     (f_idx) / len(uploaded_files),
                     text=f"Extracting from `{uploaded_file.name}` ({f_idx + 1}/{len(uploaded_files)})...",

@@ -181,16 +181,34 @@ def extract_questions_from_bytes(
         "and generate compilable TikZ/pgfplots code for any coordinate axes or geometry diagrams whenever feasible."
     )
 
-    response = client.models.generate_content(
-        model=model_name,
-        contents=[part, prompt],
-        config=types.GenerateContentConfig(
-            system_instruction=SYSTEM_PROMPT,
-            response_mime_type="application/json",
-            response_schema=QuestionBatch,
-            temperature=0.1,
-        ),
-    )
+    max_retries = 3
+    response = None
+    for attempt in range(max_retries):
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=[part, prompt],
+                config=types.GenerateContentConfig(
+                    system_instruction=SYSTEM_PROMPT,
+                    response_mime_type="application/json",
+                    response_schema=QuestionBatch,
+                    temperature=0.1,
+                ),
+            )
+            break
+        except Exception as exc:
+            err_str = str(exc)
+            if ("429" in err_str or "RESOURCE_EXHAUSTED" in err_str or "quota" in err_str.lower()) and attempt < max_retries - 1:
+                wait_sec = (attempt + 1) * 8
+                import time
+                time.sleep(wait_sec)
+                continue
+            if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str or "quota" in err_str.lower():
+                raise RuntimeError(
+                    f"Free tier quota exceeded for model '{model_name}'. "
+                    f"Please wait 30-60 seconds, or switch to 'gemini-2.5-flash' / 'gemini-1.5-flash' in the sidebar which have much higher free request limits."
+                ) from exc
+            raise exc
 
     raw_text = response.text or "{}"
     parsed_data = json.loads(raw_text)
