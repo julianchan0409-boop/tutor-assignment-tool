@@ -148,14 +148,18 @@ def _add_blank_question(section: str = "Section B") -> None:
 
 
 def _render_pdf_preview(pdf_bytes: bytes) -> None:
-    """Display an inline PDF preview in Streamlit."""
-    b64_pdf = base64.b64encode(pdf_bytes).decode("utf-8")
-    pdf_iframe = (
-        f'<iframe src="data:application/pdf;base64,{b64_pdf}" '
-        f'width="100%" height="780px" style="border: 1px solid #ddd; border-radius: 8px;" '
-        f'type="application/pdf"></iframe>'
-    )
-    st.markdown(pdf_iframe, unsafe_allow_html=True)
+    """Display an inline PDF preview in Streamlit without Chrome blocking."""
+    if hasattr(st, "pdf"):
+        st.pdf(pdf_bytes, height=750)
+    else:
+        # Fallback for older Streamlit environments
+        b64_pdf = base64.b64encode(pdf_bytes).decode("utf-8")
+        st.markdown(
+            f'<object data="data:application/pdf;base64,{b64_pdf}" type="application/pdf" width="100%" height="750px">'
+            f'<p>Your browser could not embed the PDF directly. Please use the <b>📥 Download .PDF</b> button above to view it.</p>'
+            f'</object>',
+            unsafe_allow_html=True,
+        )
 
 
 def main() -> None:
